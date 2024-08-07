@@ -50,4 +50,4 @@ new Elysia()
       ]),
     }
   )
-  .listen(4141, () => console.log("listening on port 4141"));
+  .listen(4000, () => console.log("listening on port 4141"));
