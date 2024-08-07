@@ -1,38 +1,33 @@
 import latinize from "latinize";
 import stringSimilarity from "string-similarity-js";
 
-export enum SeverityType {
-  High,
-  Medium,
-  Low,
-}
-
-export const words: Array<[string, SeverityType]> = [
-  ["nigga", SeverityType.High],
-  ["nigger", SeverityType.High],
-  ["faggot", SeverityType.High],
-  ["fag", SeverityType.High],
-  ["retard", SeverityType.High],
-  ["ching", SeverityType.High],
-  ["chong", SeverityType.High],
+export const words: Array<string> = [
+  "nigga",
+  "nigger",
+  "faggot",
+  "fag",
+  "retard",
+  "ching",
+  "chong",
 ];
 
-export function basicEval(msg: string) {
-  // process
+export function cleanUp(msg: string): string[] {
   msg = latinize(msg);
   msg = msg.trim().toLowerCase().normalize("NFKD");
   const inputs = msg.split(/\s/g);
-  const classes: SeverityType[] = [];
+  return inputs;
+}
 
+export function checkHardcore(msg: string): boolean {
+  const inputs = cleanUp(msg);
   for (const input of inputs) {
-    for (const [word, type] of words) {
+    for (const word of words) {
       if (input === word || input.includes(word)) {
-        classes.push(type);
+        return true;
       } else if (stringSimilarity(word, input) >= 0.85) {
-        classes.push(type);
+        return true;
       }
     }
   }
-
-  return classes;
+  return false;
 }

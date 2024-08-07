@@ -1,6 +1,4 @@
-import { inspect } from "bun";
 import { google } from "googleapis";
-import { SeverityType } from "./analyzer";
 
 if (!Bun.env.PERSPECTIVE_TOKEN) {
   throw new Error("PERSPECTIVE_TOKEN is not specified");
@@ -20,7 +18,6 @@ async function sendRequest(text: string) {
       TOXICITY: {},
       SEVERE_TOXICITY: {},
       IDENTITY_ATTACK: {},
-      INSULT: {},
       THREAT: {},
       // PROFANITY: {},
     },
@@ -71,19 +68,7 @@ export interface Response {
   };
 }
 
-export async function analyze(
-  text: string
-): Promise<{ type: ClassType; value: number }[]> {
+export async function analyze(text: string): Promise<Response['attributeScores']> {
   const resp = (await sendRequest(text)) as Response;
-  const classes: { type: ClassType; value: number }[] = [];
-
-  for (const _k in resp.attributeScores) {
-    const key = _k as keyof Response["attributeScores"];
-    const value = resp.attributeScores[key];
-
-    if (value.summaryScore.value > 0.85) {
-      classes.push({ type: key as ClassType, value: value.summaryScore.value });
-    }
-  }
-  return classes;
+  return resp.attributeScores;
 }

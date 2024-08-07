@@ -1,34 +1,56 @@
 import Elysia, { t } from "elysia";
 import * as perspective from "./perspective";
-import { basicEval, SeverityType } from "./analyzer";
+import { checkHardcore } from "./analyzer";
 
 new Elysia()
   .post(
     "/analyze",
     async ({ body }) => {
-      const perspectiveClasses = await perspective.analyze(body.text);
-      const basicClasses = basicEval(body.text);
+      const strings = [
+        body.user.username,
+        body.user.handle,
+        body.user.bio,
+        body.content,
+      ];
 
-      const combined = new Set(basicClasses);
-      for (const cls of perspectiveClasses) {
-        if (
-          cls.type === "IDENTITY_ATTACK" ||
-          cls.type === "SEVERE_TOXICITY" ||
-          cls.type === "THREAT"
-        ) {
-          if (cls.value > 0.7) {
-            combined.add(SeverityType.Medium);
-          } else if (cls.value > 0.8) {
-            combined.add(SeverityType.High);
-          }
+      for (const str of strings) {
+        if (checkHardcore(str)) {
+          return { verdict: "ban", reason: "hardcore filter" };
         }
       }
 
-      return [...combined];
+      const combinedString = strings.join("\n");
+      const resp = await perspective.analyze(combinedString);
+
+      if (resp.THREAT.summaryScore.value > 0.85) {
+        return { verdict: "delete", reason: "threat filter >0.85" };
+      }
+
+      if (resp.IDENTITY_ATTACK.summaryScore.value > 0.85) {
+        return { verdict: "delete", reason: "identity attack filter >0.85" };
+      }
+
+      return { verdict: "neutral", reason: "" };
     },
     {
-      body: t.Object({ text: t.String() }),
-      response: t.Array(t.Enum(SeverityType)),
+      body: t.Object({
+        content: t.String(),
+        user: t.Object({
+          id: t.String(),
+          username: t.String(),
+          handle: t.String(),
+          bio: t.String(),
+          email: t.String(),
+        }),
+      }),
+      response: t.Object({
+        reason: t.String(),
+        verdict: t.Union([
+          t.Literal("neutral"),
+          t.Literal("ban"),
+          t.Literal("delete"),
+        ]),
+      }),
     }
   )
   .listen(4141, () => console.log("listening on port 4141"));
