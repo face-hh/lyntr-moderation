@@ -5,8 +5,8 @@ import { logger } from "./logger";
 
 new Elysia()
   .onTransform(({ headers, request }) => {
-    headers["Content-Type"] = "application/json";
-    (request.headers as any)["Content-Type"] = "application/json";
+    // headers["Content-Type"] = "application/json";
+    // (request.headers as any)["Content-Type"] = "application/json";
   })
   .onError(({ error, route, request }) => {
     logger.error(`${request.method.toUpperCase()} ${route} - ${error.message}`);
@@ -21,11 +21,13 @@ new Elysia()
   .post(
     "/classify",
     async ({ body }) => {
+      const realBody = body as any;
+      
       const strings = [
-        body.user.username,
-        body.user.handle,
-        body.user.bio,
-        body.content,
+        realBody.user.username,
+        realBody.user.handle,
+        realBody.user.bio,
+        realBody.content,
       ];
 
       for (const str of strings) {
@@ -48,16 +50,7 @@ new Elysia()
       return "neutral";
     },
     {
-      body: t.Object({
-        content: t.String(),
-        user: t.Object({
-          id: t.String(),
-          username: t.String(),
-          handle: t.String(),
-          bio: t.String(),
-          email: t.String(),
-        }),
-      }),
+      body: t.Any(),
       response: t.Union([
         t.Literal("neutral"),
         t.Literal("ban"),
