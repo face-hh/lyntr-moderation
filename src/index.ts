@@ -4,8 +4,9 @@ import { checkHardcore } from "./analyzer";
 import { logger } from "./logger";
 
 new Elysia()
-  .onTransform(({ headers }) => {
+  .onTransform(({ headers, request }) => {
     headers["Content-Type"] = "application/json";
+    (request.headers as any)["Content-Type"] = "application/json";
   })
   .onError(({ error, route, request }) => {
     logger.error(`${request.method.toUpperCase()} ${route} - ${error.message}`);
