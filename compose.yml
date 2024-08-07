@@ -16,5 +16,5 @@ services:
       - website_lynternet
 
 networks:
-  website_lynternet:
+  lyntr_lynternet:
     external: true
