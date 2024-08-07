@@ -1,0 +1,22 @@
+{
+  "name": "lyntr-moderation",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/latinize": "^0.2.18",
+    "double-metaphone": "^2.0.1",
+    "elysia": "^1.1.5",
+    "googleapis": "^140.0.1",
+    "latinize": "^2.0.0",
+    "string-similarity-js": "^2.1.4"
+  }
+}
