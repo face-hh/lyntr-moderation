@@ -1,0 +1,20 @@
+secrets:
+  serverEnv:
+    file: ./.env
+
+services:
+  moderation:
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - "4141:4141"
+    secrets:
+      - serverEnv
+    networks:
+      - website_lynternet
+
+networks:
+  website_lynternet:
+    external: true
