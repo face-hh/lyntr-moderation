@@ -22,13 +22,14 @@ new Elysia()
       const combinedString = strings.join("\n");
       const resp = await perspective.analyze(combinedString);
 
-      if (resp.THREAT.summaryScore.value > 0.85) {
-        return { verdict: "delete", reason: "threat filter >0.85" };
+      if (resp.THREAT.summaryScore.value > 0.80) {
+        return { verdict: "delete", reason: "threat filter >0.80" };
       }
 
-      if (resp.IDENTITY_ATTACK.summaryScore.value > 0.85) {
-        return { verdict: "delete", reason: "identity attack filter >0.85" };
+      if (resp.IDENTITY_ATTACK.summaryScore.value > 0.93) {
+        return { verdict: "delete", reason: "identity attack filter >0.93" };
       }
+
 
       return { verdict: "neutral", reason: "" };
     },

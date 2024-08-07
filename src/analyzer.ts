@@ -9,6 +9,8 @@ export const words: Array<string> = [
   "retard",
   "ching",
   "chong",
+  "hitler",
+  "nazi"
 ];
 
 export function cleanUp(msg: string): string[] {
