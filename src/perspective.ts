@@ -15,8 +15,8 @@ async function sendRequest(text: string) {
       text,
     },
     requestedAttributes: {
-      TOXICITY: {},
-      SEVERE_TOXICITY: {},
+      // TOXICITY: {},
+      // SEVERE_TOXICITY: {},
       IDENTITY_ATTACK: {},
       THREAT: {},
       // PROFANITY: {},
