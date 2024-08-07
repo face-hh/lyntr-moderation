@@ -4,7 +4,7 @@ import { checkHardcore } from "./analyzer";
 
 new Elysia()
   .post(
-    "/analyze",
+    "/classify",
     async ({ body }) => {
       const strings = [
         body.user.username,

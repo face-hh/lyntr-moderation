@@ -3,13 +3,13 @@ secrets:
     file: ./.env
 
 services:
-  moderation:
+  moderation-svc:
     restart: unless-stopped
     build:
       context: ./
       dockerfile: ./Dockerfile
     ports:
-      - "4141:4141"
+      - "4000:4141"
     secrets:
       - serverEnv
     networks:
