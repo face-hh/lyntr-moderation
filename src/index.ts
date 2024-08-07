@@ -4,10 +4,10 @@ import { checkHardcore } from "./analyzer";
 import { logger } from "./logger";
 
 new Elysia()
-  .onTransform(({ headers, request }) => {
-    // headers["Content-Type"] = "application/json";
-    // (request.headers as any)["Content-Type"] = "application/json";
-  })
+  // .onTransform(({ headers, request }) => {
+  //   headers["Content-Type"] = "application/json";
+  //    (request.headers as any)["Content-Type"] = "application/json";
+  // })
   .onError(({ error, route, request }) => {
     logger.error(`${request.method.toUpperCase()} ${route} - ${error.message}`);
   })
@@ -21,8 +21,7 @@ new Elysia()
   .post(
     "/classify",
     async ({ body }) => {
-      const realBody = body as any;
-      
+      const realBody = JSON.parse(body as any);
       const strings = [
         realBody.user.username,
         realBody.user.handle,
