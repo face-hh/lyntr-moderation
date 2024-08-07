@@ -17,6 +17,7 @@
     "elysia": "^1.1.5",
     "googleapis": "^140.0.1",
     "latinize": "^2.0.0",
-    "string-similarity-js": "^2.1.4"
+    "string-similarity-js": "^2.1.4",
+    "winston": "^3.13.1"
   }
 }

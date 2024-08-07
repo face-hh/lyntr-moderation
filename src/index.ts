@@ -1,8 +1,19 @@
 import Elysia, { t } from "elysia";
 import * as perspective from "./perspective";
 import { checkHardcore } from "./analyzer";
+import { logger } from "./logger";
 
 new Elysia()
+  .onError(({ error, route, request }) => {
+    logger.error(`${request.method.toUpperCase()} ${route} - ${error.message}`);
+  })
+  .onAfterHandle(({ request, route, set, response, body }) => {
+    logger.info(
+      `${request.method.toUpperCase()} ${route} - ${
+        set.status
+      } - ${JSON.stringify(body)} - ${JSON.stringify(response)}`
+    );
+  })
   .post(
     "/classify",
     async ({ body }) => {
@@ -50,4 +61,6 @@ new Elysia()
       ]),
     }
   )
-  .listen(4000, () => console.log("listening on port 4141"));
+  .listen(4000, () => {
+    logger.info("listening on port 4000");
+  });
