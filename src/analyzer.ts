@@ -7,8 +7,7 @@ export const words: Array<string> = [
   "faggot",
   "fag",
   "retard",
-  "ching",
-  "chong",
+  "ching chong",
   "hitler",
   "nazi"
 ];
@@ -26,7 +25,7 @@ export function checkHardcore(msg: string): boolean {
     for (const word of words) {
       if (input === word || input.includes(word)) {
         return true;
-      } else if (stringSimilarity(word, input) >= 0.85) {
+      } else if (stringSimilarity(word, input) >= 0.90) {
         return true;
       }
     }

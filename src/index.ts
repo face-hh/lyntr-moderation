@@ -38,6 +38,7 @@ new Elysia()
       const combinedString = strings.join("\n");
       const resp = await perspective.analyze(combinedString);
 
+      console.log(resp);
       if (resp.THREAT.summaryScore.value > 0.8) {
         return "delete";
       }
